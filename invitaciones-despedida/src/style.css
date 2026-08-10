@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Caveat:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -114,7 +115,33 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    font-family: 'Caveat', cursive;
+    background: #f6dfe7;
+  }
+
   body {
     @apply bg-background text-foreground;
+    margin: 0;
+    min-height: 100vh;
+    overscroll-behavior: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@media (max-width: 430px) {
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }
