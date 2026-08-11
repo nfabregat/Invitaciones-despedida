@@ -42,8 +42,8 @@ const openInvitation = () => {
   playOpenSound()
 
   window.setTimeout(() => {
-    router.push('/invitacion')
-  }, 500)
+    router.push('/principal')
+  }, 900)
 }
 </script>
 

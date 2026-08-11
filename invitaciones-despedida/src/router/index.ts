@@ -1,7 +1,6 @@
 import Home from "@/pages/home/Home.vue";
+import Principal from "@/pages/principal/Principal.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
-
-
 
 export const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -11,6 +10,11 @@ export const router = createRouter({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/principal',
+      name: 'principal',
+      component: Principal
     },
     {
       path: '/:patchMatch(.*)',
