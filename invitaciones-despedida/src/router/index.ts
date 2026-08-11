@@ -12,7 +12,7 @@ export const router = createRouter({
       component: Home
     },
     {
-      path: '/principal',
+      path: '/principal/:name?',
       name: 'principal',
       component: Principal
     },

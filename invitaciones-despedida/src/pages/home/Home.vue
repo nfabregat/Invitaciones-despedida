@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const isOpen = ref(false)
+
+const invitedName = computed(() => {
+  const rawName = typeof route.query.name === 'string' ? route.query.name : ''
+  return rawName ? `/${encodeURIComponent(rawName)}` : ''
+})
 
 const playOpenSound = () => {
   const AudioContextClass =
@@ -42,7 +48,7 @@ const openInvitation = () => {
   playOpenSound()
 
   window.setTimeout(() => {
-    router.push('/principal')
+    router.push(`/principal${invitedName.value}`)
   }, 900)
 }
 </script>

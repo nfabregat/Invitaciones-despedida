@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const personalizedName = computed(() => {
+  const rawName =
+    (route.params.name as string | undefined) ??
+    (typeof route.query.name === 'string' ? route.query.name : '')
+
+  const decoded = rawName ? decodeURIComponent(rawName) : ''
+
+  return decoded.trim() || 'Aquí va tu texto'
+})
+</script>
+
 <template>
   <main
     class="principal-page"
@@ -5,12 +22,12 @@
       '--hat-left': '30%',
       '--hat-top': '52%',
       '--text-left': '57%',
-      '--text-top': '32%'
+      '--text-top': '30%'
     }"
   >
     <img src="/principal/sombrerito1.png" alt="Sombrerito" class="sombrerito" />
 
-    <p class="floating-text">Aquí va tu texto</p>
+    <p class="floating-text">{{ personalizedName }}</p>
   </main>
 </template>
 
