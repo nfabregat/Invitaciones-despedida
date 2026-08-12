@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const isBoxOpen = ref(false)
 
 const personalizedName = computed(() => {
@@ -17,7 +18,13 @@ const personalizedName = computed(() => {
 
 const openBox = () => {
   if (isBoxOpen.value) return
+
   isBoxOpen.value = true
+
+  window.setTimeout(() => {
+    const encodedName = encodeURIComponent(personalizedName.value)
+    router.push(`/info/${encodedName}`)
+  }, 500)
 }
 </script>
 
