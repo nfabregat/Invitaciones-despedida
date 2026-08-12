@@ -33,6 +33,8 @@ const personalizedName = computed(() => {
     <section class="panel panel-two" aria-label="Siguiente imagen">
       <img src="/principal/avión.png" alt="Avión" class="plane" />
     </section>
+
+    <section class="panel panel-three" aria-label="Tercera imagen" />
   </main>
 </template>
 
@@ -65,6 +67,10 @@ const personalizedName = computed(() => {
 
 .panel-two {
   background-image: url('/principal/principal2.png');
+}
+
+.panel-three {
+  background-image: url('/principal/principal3.png');
 }
 
 .plane {
