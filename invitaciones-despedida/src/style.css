@@ -118,7 +118,7 @@
 
   html {
     font-family: 'Caveat', cursive;
-    background: #f6dfe7;
+    background: #f6d8e6;
   }
 
   body {
@@ -126,6 +126,7 @@
     margin: 0;
     min-height: 100vh;
     overscroll-behavior: none;
+    background: #f6d8e6;
   }
 
   button,

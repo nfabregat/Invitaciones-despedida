@@ -11,34 +11,71 @@ const personalizedName = computed(() => {
 
   const decoded = rawName ? decodeURIComponent(rawName) : ''
 
-  return decoded.trim() || 'Aquí va tu texto'
+  return decoded.trim() || 'name'
 })
 </script>
 
 <template>
-  <main
-    class="principal-page"
-    :style="{
-      '--hat-left': '30%',
-      '--hat-top': '52%',
-      '--text-left': '57%',
-      '--text-top': '30%'
-    }"
-  >
-    <img src="/principal/sombrerito1.png" alt="Sombrerito" class="sombrerito" />
+  <main class="story">
+    <section
+      class="panel panel-one"
+      :style="{
+        '--hat-left': '30%',
+        '--hat-top': '52%',
+        '--text-left': '57%',
+        '--text-top': '31.5%'
+      }"
+    >
+      <img src="/principal/sombrerito1.png" alt="Sombrerito" class="sombrerito" />
+      <p class="floating-text">{{ personalizedName }}</p>
+    </section>
 
-    <p class="floating-text">{{ personalizedName }}</p>
+    <section class="panel panel-two" aria-label="Siguiente imagen">
+      <img src="/principal/avión.png" alt="Avión" class="plane" />
+    </section>
   </main>
 </template>
 
 <style scoped>
-.principal-page {
+.story {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.panel {
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-  background: url('/principal/principal1.png') center center / cover no-repeat;
+  margin: 0;
+  padding: 0;
+  scroll-snap-align: start;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.panel-one {
+  background-image: url('/principal/principal1.png');
   animation: principalFadeIn 1.2s ease-out both;
+}
+
+.panel-two {
+  background-image: url('/principal/principal2.png');
+}
+
+.plane {
+  position: absolute;
+  right: -12%;
+  top: 22%;
+  width: min(30vw, 220px);
+  max-width: 220px;
+  transform: translateX(0) translateY(0);
+  animation: planeFlight 8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.08));
 }
 
 .sombrerito {
@@ -106,6 +143,24 @@ const personalizedName = computed(() => {
   }
   80% {
     transform: translate(-50%, -50%) rotate(1deg) translateY(1px);
+  }
+}
+
+@keyframes planeFlight {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-18vw) translateY(-10px) rotate(-4deg);
+  }
+  50% {
+    transform: translateX(-36vw) translateY(18px) rotate(2deg);
+  }
+  75% {
+    transform: translateX(-52vw) translateY(-8px) rotate(-3deg);
+  }
+  100% {
+    transform: translateX(-70vw) translateY(12px) rotate(2deg);
   }
 }
 </style>
