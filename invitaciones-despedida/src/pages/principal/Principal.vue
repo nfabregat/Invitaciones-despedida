@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const isBoxOpen = ref(false)
 
 const personalizedName = computed(() => {
   const rawName =
@@ -13,6 +14,11 @@ const personalizedName = computed(() => {
 
   return decoded.trim() || 'name'
 })
+
+const openBox = () => {
+  if (isBoxOpen.value) return
+  isBoxOpen.value = true
+}
 </script>
 
 <template>
@@ -35,6 +41,24 @@ const personalizedName = computed(() => {
     </section>
 
     <section class="panel panel-three" aria-label="Tercera imagen" />
+
+    <section class="panel panel-four" aria-label="Cuarta imagen">
+      <button type="button" class="box-button" aria-label="Abrir caja" @click="openBox">
+        <img
+          v-if="!isBoxOpen"
+          src="/principal/caja-cerrada.png"
+          alt="Caja cerrada"
+          class="closed-box"
+        />
+
+        <img
+          v-else
+          src="/principal/caja-abierta.png"
+          alt="Caja abierta"
+          class="opened-box"
+        />
+      </button>
+    </section>
   </main>
 </template>
 
@@ -73,6 +97,16 @@ const personalizedName = computed(() => {
   background-image: url('/principal/principal3.png');
 }
 
+.panel-four {
+  background-image: url('/principal/principal4.png');
+  width: 100vw;
+  height: auto;
+  min-height: unset;
+  aspect-ratio: 1080 / 1142;
+  background-size: contain;
+  background-position: center top;
+}
+
 .plane {
   position: absolute;
   right: -12%;
@@ -82,6 +116,33 @@ const personalizedName = computed(() => {
   transform: translateX(0) translateY(0);
   animation: planeFlight 8s ease-in-out infinite alternate;
   filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.08));
+}
+
+.box-button {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.closed-box {
+  display: block;
+  width: 350px;
+  max-width: none;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.14));
+  animation: boxShake 2.6s ease-in-out infinite;
+}
+
+.opened-box {
+  display: block;
+  width: 350px;
+  max-width: none;
+  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.14));
+  animation: boxOpen 0.6s ease-out forwards;
 }
 
 .sombrerito {
@@ -167,6 +228,51 @@ const personalizedName = computed(() => {
   }
   100% {
     transform: translateX(-70vw) translateY(12px) rotate(2deg);
+  }
+}
+
+@keyframes boxShake {
+  0%,
+  18% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  22% {
+    transform: rotate(-3deg) translateY(-3px);
+  }
+  26% {
+    transform: rotate(3deg) translateY(-5px);
+  }
+  31% {
+    transform: rotate(-2deg) translateY(-4px);
+  }
+  35% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  70% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  74% {
+    transform: rotate(-2deg) translateY(-4px);
+  }
+  78% {
+    transform: rotate(2deg) translateY(-5px);
+  }
+  83% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(-6px);
+  }
+}
+
+@keyframes boxOpen {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.96) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 </style>
