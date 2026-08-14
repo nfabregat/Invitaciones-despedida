@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
 
+const isVelaLit = ref(true)
+
+const toggleVela = () => {
+  isVelaLit.value = false
+}
+
 const carouselImages = Array.from({ length: 9 }, (_, index) => {
   const number = String(index + 1).padStart(2, '0')
   return `/info/carrusel/carrusel${number}.png`
@@ -124,6 +130,24 @@ startAutoAdvance()
     <section class="panel" aria-label="Información tres">
       <img src="/info/info3.png" alt="Información tres" class="panel-image" />
     </section>
+
+    <section class="panel panel-info4" aria-label="Información cuatro">
+      <img src="/info/info4.png" alt="Información cuatro" class="panel-image" />
+
+      <button
+        type="button"
+        class="vela-button"
+        :class="{ 'is-lit': isVelaLit }"
+        aria-label="Encender vela"
+        @click="toggleVela"
+      >
+        <img
+          :src="isVelaLit ? '/info/vela-encendida.png' : '/info/vela-apagada.png'"
+          alt="Vela"
+          class="vela-image"
+        />
+      </button>
+    </section>
   </main>
 </template>
 
@@ -163,6 +187,13 @@ startAutoAdvance()
   line-height: 0;
 }
 
+.panel-info4 {
+  position: relative;
+  display: block;
+  width: 100vw;
+  line-height: 0;
+}
+
 .info2-image {
   display: block;
   width: 100vw;
@@ -170,6 +201,52 @@ startAutoAdvance()
   margin: 0;
   padding: 0;
   vertical-align: top;
+}
+
+.vela-button {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%, -50%);
+  width: min(48vw, 300px);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.vela-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 16px rgba(115, 72, 21, 0.25));
+  animation: velaShake 2.8s ease-in-out infinite;
+}
+
+.vela-button.is-lit .vela-image {
+  filter: drop-shadow(0 0 18px rgba(255, 207, 99, 0.8));
+}
+
+@keyframes velaShake {
+  0%,
+  20% {
+    transform: rotate(0deg) translateY(0px);
+  }
+  24% {
+    transform: rotate(-4deg) translateY(-4px);
+  }
+  28% {
+    transform: rotate(4deg) translateY(-2px);
+  }
+  34% {
+    transform: rotate(-2deg) translateY(-5px);
+  }
+  38% {
+    transform: rotate(0deg) translateY(0px);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0px);
+  }
 }
 
 .carousel-shell {
