@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isVelaLit = ref(true)
 
 const toggleVela = () => {
+  if (!isVelaLit.value) return
+
   isVelaLit.value = false
+
+  window.setTimeout(() => {
+    router.push('/invitation')
+  }, 900)
 }
 
 const carouselImages = Array.from({ length: 9 }, (_, index) => {
