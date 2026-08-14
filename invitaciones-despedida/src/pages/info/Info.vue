@@ -35,12 +35,16 @@ const goToStep = (nextIndex: number) => {
     currentIndex.value = nextIndex
   }
 
-  const currentImageElement = carouselShell.value?.querySelectorAll('img')[currentIndex.value]
+  const shell = carouselShell.value
+  const currentImageElement = shell?.querySelectorAll('img')[currentIndex.value]
 
-  currentImageElement?.scrollIntoView({
-    behavior: 'smooth',
-    inline: 'center',
-    block: 'nearest'
+  if (!shell || !currentImageElement) return
+
+  const targetLeft = currentImageElement.offsetLeft - (shell.clientWidth - currentImageElement.clientWidth) / 2
+
+  shell.scrollTo({
+    left: Math.max(targetLeft, 0),
+    behavior: 'smooth'
   })
 }
 
@@ -92,6 +96,8 @@ startAutoAdvance()
     </section>
 
     <section class="panel panel-info2" aria-label="Información dos">
+      <img src="/info/info2.png" alt="Información dos" class="info2-image" />
+
       <div class="carousel-shell" ref="carouselShell" aria-label="Carrusel de imágenes">
         <div class="carousel-track">
           <img
@@ -114,13 +120,19 @@ startAutoAdvance()
         </button>
       </div>
     </section>
+
+    <section class="panel" aria-label="Información tres">
+      <img src="/info/info3.png" alt="Información tres" class="panel-image" />
+    </section>
   </main>
 </template>
 
 <style scoped>
 .info-story {
   width: 100vw;
+  height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
   scroll-snap-type: y mandatory;
   scroll-padding: 0;
   overscroll-behavior: none;
@@ -147,14 +159,23 @@ startAutoAdvance()
 .panel-info2 {
   position: relative;
   display: block;
-  min-height: 100vh;
-  background: url('/info/info2.png') center top / 100vw auto no-repeat;
+  width: 100vw;
+  line-height: 0;
+}
+
+.info2-image {
+  display: block;
+  width: 100vw;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
 }
 
 .carousel-shell {
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 30%;
   transform: translate(-50%, -50%);
   z-index: 1;
   width: min(78vw, 580px);
@@ -193,7 +214,7 @@ startAutoAdvance()
 .carousel-controls {
   position: absolute;
   left: 50%;
-  top: 40%;
+  top: 35%;
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: space-between;
