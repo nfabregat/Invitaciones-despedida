@@ -119,7 +119,26 @@ const declineInvitation = () => {
     </div>
 
     <div v-if="!showModal && isConfirmed" class="page-content" aria-label="Página de invitación">
-      <div class="placeholder-surface" />
+      <div class="invitation-one-wrapper">
+        <img src="/invitation/invitation1.png" alt="Invitación de despedida Erasmus, primera parte" class="invitation-image" />
+        <a
+          class="calendar-button"
+          href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Despedida%20Nerea%21%21&dates=20260912/20260914&ctz=Europe%2FMadrid"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Añadir Despedida Nerea al calendario"
+        >
+          <img src="/invitation/alerta.png" alt="Añadir al calendario" />
+        </a>
+      </div>
+      <iframe
+        class="location-map"
+        title="Ubicación de Cantavieja, Teruel"
+        src="https://www.google.com/maps?q=Cantavieja%2C%20Teruel&z=14&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      />
+      <img src="/invitation/invitation2.png" alt="Invitación de despedida Erasmus, segunda parte" class="invitation-image" />
     </div>
   </main>
 </template>
@@ -203,9 +222,85 @@ const declineInvitation = () => {
   min-height: 100vh;
 }
 
-.placeholder-surface {
+.invitation-image {
+  display: block;
   width: 100%;
-  min-height: 100vh;
-  background: #f6d8e6;
+  height: auto;
+}
+
+.invitation-one-wrapper {
+  position: relative;
+}
+
+.calendar-button {
+  position: absolute;
+  top: 70%;
+  left: 15%;
+  display: block;
+  width: 19%;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.calendar-button:hover,
+.calendar-button:focus-visible {
+  transform: scale(1.08);
+}
+
+.calendar-button:focus-visible {
+  outline: 3px solid #5a1f3f;
+  outline-offset: 3px;
+}
+
+.calendar-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: calendarAlertShake 3.1s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes calendarAlertShake {
+  0%,
+  18% {
+    transform: rotate(0deg) translateY(0);
+  }
+  22% {
+    transform: rotate(-5deg) translateY(2px);
+  }
+  26% {
+    transform: rotate(5deg) translateY(0);
+  }
+  31% {
+    transform: rotate(-3deg) translateY(1px);
+  }
+  35%,
+  70% {
+    transform: rotate(0deg) translateY(0);
+  }
+  74% {
+    transform: rotate(-4deg) translateY(2px);
+  }
+  78% {
+    transform: rotate(4deg) translateY(0);
+  }
+  83%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-button img {
+    animation: none;
+  }
+}
+
+.location-map {
+  display: block;
+  width: 100%;
+  height: min(72vw, 360px);
+  min-height: 260px;
+  border: 0;
 }
 </style>
