@@ -16,62 +16,72 @@ const acceptInvitation = () => {
 const declineInvitation = () => {
   noCount.value += 1
 
-  const yesHalfWidth = 90
-  const yesHalfHeight = 70
-  const noHalfWidth = 80
-  const noHalfHeight = 60
-  const margin = 18
+  const yesSize = 140 * yesScale.value
+  const noSize = 150
+  const padding = 18
+
+  const yesHalfWidth = yesSize / 2 + padding
+  const yesHalfHeight = yesSize / 2 + padding
+  const noHalfWidth = noSize / 2
+  const noHalfHeight = noSize / 2
+
+  const safeWidth = 360
+  const safeHeight = 620
+  const safeLeft = -safeWidth / 2
+  const safeRight = safeWidth / 2
+  const safeTop = -safeHeight / 2
+  const safeBottom = safeHeight / 2
+
+  const earlyThreshold = 6
+  const shouldExitScreen = noCount.value >= earlyThreshold
 
   let nextX = 0
   let nextY = 0
-  let validCandidate = false
 
-  for (let attempt = 0; attempt < 90; attempt += 1) {
-    const candidateX = Math.random() * 180 - 90
-    const candidateY = Math.random() * 130 - 65
-
-    const noLeft = candidateX - noHalfWidth
-    const noRight = candidateX + noHalfWidth
-    const noTop = candidateY - noHalfHeight
-    const noBottom = candidateY + noHalfHeight
-
-    const safeLeft = -yesHalfWidth - margin
-    const safeRight = yesHalfWidth + margin
-    const safeTop = -yesHalfHeight - margin
-    const safeBottom = yesHalfHeight + margin
-
-    const overlapsYesArea =
-      noRight > safeLeft &&
-      noLeft < safeRight &&
-      noBottom > safeTop &&
-      noTop < safeBottom
-
-    if (!overlapsYesArea) {
-      nextX = candidateX
-      nextY = candidateY
-      validCandidate = true
-      break
-    }
-  }
-
-  if (!validCandidate) {
-    const fallbackPositions = [
-      { x: 150, y: 0 },
-      { x: -150, y: 0 },
-      { x: 0, y: 110 },
-      { x: 0, y: -110 },
-      { x: 120, y: -90 },
-      { x: -120, y: 90 },
-      { x: 100, y: 80 },
-      { x: -100, y: -80 }
+  if (!shouldExitScreen) {
+    const candidates = [
+      { x: 0, y: 0 },
+      { x: 90, y: 0 },
+      { x: -90, y: 0 },
+      { x: 0, y: 80 },
+      { x: 0, y: -80 },
+      { x: 120, y: -70 },
+      { x: -120, y: 70 },
+      { x: 140, y: 40 },
+      { x: -140, y: -40 },
+      { x: 60, y: -120 },
+      { x: -60, y: 120 }
     ]
 
-    const fallback =
-      fallbackPositions[Math.floor(Math.random() * fallbackPositions.length)] ??
-      { x: 150, y: 0 }
+    const chosen =
+      candidates.find(({ x, y }) => {
+        const noLeft = x - noHalfWidth
+        const noRight = x + noHalfWidth
+        const noTop = y - noHalfHeight
+        const noBottom = y + noHalfHeight
 
-    nextX = fallback.x
-    nextY = fallback.y
+        const overlapsYes =
+          noRight > -yesHalfWidth &&
+          noLeft < yesHalfWidth &&
+          noBottom > -yesHalfHeight &&
+          noTop < yesHalfHeight
+
+        const insideSafeArea =
+          noLeft >= safeLeft &&
+          noRight <= safeRight &&
+          noTop >= safeTop &&
+          noBottom <= safeBottom
+
+        return insideSafeArea && !overlapsYes
+      }) ?? { x: 0, y: 0 }
+
+    nextX = chosen.x
+    nextY = chosen.y
+  } else {
+    const randomX = (Math.random() * 2 - 1) * (safeWidth / 2 + 120)
+    const randomY = (Math.random() * 2 - 1) * (safeHeight / 2 + 80)
+    nextX = randomX
+    nextY = randomY
   }
 
   noOffset.value = { x: nextX, y: nextY }
