@@ -139,6 +139,17 @@ const declineInvitation = () => {
         referrerpolicy="no-referrer-when-downgrade"
       />
       <img src="/invitation/invitation2.png" alt="Invitación de despedida Erasmus, segunda parte" class="invitation-image" />
+      <section class="music-section" aria-label="Canción de la invitación">
+        <iframe
+          class="spotify-player"
+          title="Vacaciones de Estopa"
+          src="https://open.spotify.com/embed/track/3bEiJMR1naTWppGAReXENm?utm_source=generator"
+          loading="lazy"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        />
+        <p>Gózate las fotitos mientras disfrutas de tremendo temazo</p>
+      </section>
+      <img src="/invitation/invitation3.png" alt="Invitación de despedida Erasmus, tercera parte" class="invitation-image" />
     </div>
   </main>
 </template>
@@ -302,5 +313,32 @@ const declineInvitation = () => {
   height: min(72vw, 360px);
   min-height: 260px;
   border: 0;
+}
+
+.music-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 2rem 1.25rem;
+  background: #f6d8e6;
+  text-align: center;
+}
+
+.spotify-player {
+  width: min(100%, 480px);
+  height: 152px;
+  border: 0;
+  border-radius: 12px;
+}
+
+.music-section p {
+  margin: 0;
+  color: #e776ad;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.3rem, 3.2vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.05;
+  white-space: nowrap;
 }
 </style>
