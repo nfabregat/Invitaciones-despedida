@@ -6,6 +6,19 @@ const isConfirmed = ref(false)
 const noCount = ref(0)
 const noOffset = ref({ x: 0, y: 0 })
 
+const collagePhotos = [
+  '1000089053.jpg', '1000089060.jpg', '1000089061.jpg', '1000089071.jpg',
+  '1000089076.jpg', '1000089634.jpg', '1000112013.jpg', '1000114737.jpg',
+  '1000124056.jpg', '1000125100.jpg', '1000129436.jpg', '1000135833.jpg',
+  '59bd5845-2792-4b17-b3ac-ab563e57224b (1).jpg',
+  '66760eff-13d7-4219-aa8c-0a6ffb910308_Original.jpg',
+  'da5df6e1-90f4-418c-854c-add75d6d8717.jpg',
+  'f1975436-dd9e-4269-926e-0492d557b9d7.jpg',
+  'IMG_1097_Original.jpg', 'IMG_1631_Original.png', 'IMG_2398_Original.png',
+  'IMG_2678_Original.jpg', 'IMG_3095.jpg', 'IMG_3096.jpg', 'IMG_3098.jpg',
+  'IMG_8733_Original.jpg'
+]
+
 const yesScale = computed(() => 1 + noCount.value * 0.24 + noCount.value * noCount.value * 0.18)
 
 const acceptInvitation = () => {
@@ -148,6 +161,15 @@ const declineInvitation = () => {
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         />
         <p>Gózate las fotitos mientras disfrutas de tremendo temazo</p>
+      </section>
+      <section class="photo-collage" aria-label="Collage de recuerdos">
+        <img
+          v-for="(photo, index) in collagePhotos"
+          :key="photo"
+          :src="`/invitation/collage/collage/${photo}`"
+          :alt="`Foto de recuerdo ${index + 1}`"
+          loading="lazy"
+        />
       </section>
       <img src="/invitation/invitation3.png" alt="Invitación de despedida Erasmus, tercera parte" class="invitation-image" />
     </div>
@@ -340,5 +362,23 @@ const declineInvitation = () => {
   font-weight: 700;
   line-height: 1.05;
   white-space: nowrap;
+}
+
+.photo-collage {
+  column-count: 2;
+  column-gap: 9px;
+  padding: 1rem;
+  background: #f6d8e6;
+}
+
+.photo-collage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 9px;
+  break-inside: avoid;
+  border: 3px solid rgba(255, 255, 255, 0.82);
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(119, 55, 85, 0.18);
 }
 </style>
