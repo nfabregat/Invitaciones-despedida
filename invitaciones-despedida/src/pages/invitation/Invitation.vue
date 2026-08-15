@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const showModal = ref(true)
 const isConfirmed = ref(false)
 const noCount = ref(0)
 const noOffset = ref({ x: 0, y: 0 })
+const countdown = ref({ days: 0, hours: 0, minutes: 0, seconds: 0, isFinished: false })
+let countdownTimer: ReturnType<typeof setInterval> | undefined
 
 const collagePhotos = [
   '1000089053.jpg', '1000089060.jpg', '1000089061.jpg', '1000089071.jpg',
@@ -20,6 +22,36 @@ const collagePhotos = [
 ]
 
 const yesScale = computed(() => 1 + noCount.value * 0.24 + noCount.value * noCount.value * 0.18)
+
+const updateCountdown = () => {
+  // El 12 de septiembre de 2026 a las 00:00 en horario de Madrid (CEST).
+  const targetTime = new Date('2026-09-11T22:00:00.000Z').getTime()
+  const difference = targetTime - Date.now()
+
+  if (difference <= 0) {
+    countdown.value = { days: 0, hours: 0, minutes: 0, seconds: 0, isFinished: true }
+    return
+  }
+
+  countdown.value = {
+    days: Math.floor(difference / 86_400_000),
+    hours: Math.floor((difference / 3_600_000) % 24),
+    minutes: Math.floor((difference / 60_000) % 60),
+    seconds: Math.floor((difference / 1_000) % 60),
+    isFinished: false
+  }
+}
+
+const formatTime = (value: number) => String(value).padStart(2, '0')
+
+onMounted(() => {
+  updateCountdown()
+  countdownTimer = setInterval(updateCountdown, 1_000)
+})
+
+onUnmounted(() => {
+  if (countdownTimer) clearInterval(countdownTimer)
+})
 
 const acceptInvitation = () => {
   isConfirmed.value = true
@@ -171,7 +203,16 @@ const declineInvitation = () => {
           loading="lazy"
         />
       </section>
-      <img src="/invitation/invitation3.png" alt="Invitación de despedida Erasmus, tercera parte" class="invitation-image" />
+      <section class="countdown-section" aria-label="Cuenta atrás para la despedida">
+        <h2>NOS VEMOS EN...</h2>
+        <p v-if="countdown.isFinished" class="countdown-finished">¡HOY ES EL DÍA!</p>
+        <div v-else class="countdown" :aria-label="`Quedan ${countdown.days} días, ${countdown.hours} horas, ${countdown.minutes} minutos y ${countdown.seconds} segundos`">
+          <div class="countdown-unit"><strong>{{ countdown.days }}</strong><span>días</span></div>
+          <div class="countdown-unit"><strong>{{ formatTime(countdown.hours) }}</strong><span>horas</span></div>
+          <div class="countdown-unit"><strong>{{ formatTime(countdown.minutes) }}</strong><span>minutos</span></div>
+          <div class="countdown-unit"><strong>{{ formatTime(countdown.seconds) }}</strong><span>segundos</span></div>
+        </div>
+      </section>
     </div>
   </main>
 </template>
@@ -179,7 +220,7 @@ const declineInvitation = () => {
 <style scoped>
 .invitation-page {
   position: relative;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   background: #f6d8e6;
 }
@@ -356,9 +397,9 @@ const declineInvitation = () => {
 
 .music-section p {
   margin: 0;
-  color: #e776ad;
+  color: #9d2c61;
   font-family: 'Caveat', cursive;
-  font-size: clamp(1.3rem, 3.2vw, 0.95rem);
+  font-size: clamp(0.7rem, 3.2vw, 0.95rem);
   font-weight: 700;
   line-height: 1.05;
   white-space: nowrap;
@@ -380,5 +421,52 @@ const declineInvitation = () => {
   border: 3px solid rgba(255, 255, 255, 0.82);
   border-radius: 12px;
   box-shadow: 0 3px 8px rgba(119, 55, 85, 0.18);
+}
+
+.countdown-section {
+  padding: 2.25rem 1rem 2rem;
+  background: #f6d8e6;
+  color: #9d2c61;
+  text-align: center;
+}
+
+.countdown-section h2,
+.countdown-finished {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(2.6rem, 12vw, 4.6rem);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+  max-width: 520px;
+  margin: 1.5rem auto 0;
+}
+
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  padding: 0.65rem 0.2rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 3px 8px rgba(119, 55, 85, 0.12);
+}
+
+.countdown-unit strong {
+  color: #5a1f3f;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.85rem, 9vw, 3rem);
+  line-height: 0.9;
+}
+
+.countdown-unit span {
+  font-size: clamp(0.68rem, 3vw, 0.9rem);
+  font-weight: 700;
 }
 </style>
